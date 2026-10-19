@@ -55,9 +55,16 @@ function RegisterForm() {
         }),
       });
 
-      const data = await res.json();
+      let data = null;
+      try {
+        data = await res.json();
+      } catch {
+        const text = await res.text().catch(() => "");
+        throw new Error(text || `Erro ${res.status}: Não foi possível processar o cadastro no servidor.`);
+      }
+
       if (!res.ok) {
-        setError(data.error || "Erro ao criar conta.");
+        setError(data?.error || `Erro ${res.status} ao criar conta.`);
         setLoading(false);
         return;
       }
@@ -67,8 +74,8 @@ function RegisterForm() {
       // Redireciona o usuário recém-cadastrado diretamente para a página inicial
       router.push("/");
       router.refresh();
-    } catch {
-      setError("Erro de conexão ao tentar cadastrar.");
+    } catch (err) {
+      setError(err?.message || "Erro de conexão ao tentar cadastrar.");
       setLoading(false);
     }
   }

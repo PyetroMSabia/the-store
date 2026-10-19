@@ -29,9 +29,16 @@ function LoginForm() {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      let data = null;
+      try {
+        data = await res.json();
+      } catch {
+        const text = await res.text().catch(() => "");
+        throw new Error(text || `Erro ${res.status}: Não foi possível processar o login no servidor.`);
+      }
+
       if (!res.ok) {
-        setError(data.error || "Erro ao entrar.");
+        setError(data?.error || `Erro ${res.status} ao entrar.`);
         setLoading(false);
         return;
       }
@@ -39,8 +46,8 @@ function LoginForm() {
       await refresh();
       router.push(next);
       router.refresh();
-    } catch {
-      setError("Erro de conexão ao tentar fazer login.");
+    } catch (err) {
+      setError(err?.message || "Erro de conexão ao tentar fazer login.");
       setLoading(false);
     }
   }
