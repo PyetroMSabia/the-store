@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0" stop-color="#3a3128"/>
+      <stop offset="0.6" stop-color="#1c1814"/>
+      <stop offset="1" stop-color="#0d0b09"/>
+    </radialGradient>
+    <linearGradient id="mesh" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2b2b2e"/>
+      <stop offset="1" stop-color="#121214"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f5d061" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#f5d061" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#f5d061" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+      <path d="M0 5h10M5 0v10" stroke="#3b3b40" stroke-width="1"/>
+    </pattern>
+    <filter id="soft"><feGaussianBlur stdDeviation="14"/></filter>
+  </defs>
+  <rect width="800" height="800" fill="url(#bg)"/>
+  <ellipse cx="400" cy="700" rx="230" ry="26" fill="#000" opacity=".6" filter="url(#soft)"/>
+  <!-- base -->
+  <g stroke="#1a1a1c" stroke-width="16" stroke-linecap="round">
+    <line x1="400" y1="600" x2="250" y2="680"/>
+    <line x1="400" y1="600" x2="550" y2="680"/>
+    <line x1="400" y1="600" x2="300" y2="700"/>
+    <line x1="400" y1="600" x2="500" y2="700"/>
+    <line x1="400" y1="600" x2="400" y2="710"/>
+  </g>
+  <g fill="#0c0c0d">
+    <circle cx="250" cy="684" r="13"/><circle cx="550" cy="684" r="13"/>
+    <circle cx="300" cy="704" r="13"/><circle cx="500" cy="704" r="13"/>
+    <circle cx="400" cy="714" r="13"/>
+  </g>
+  <rect x="388" y="500" width="24" height="105" rx="8" fill="#5a5a60"/>
+  <rect x="392" y="500" width="6" height="105" fill="#9a9aa2" opacity=".5"/>
+  <!-- seat -->
+  <path d="M265 470 Q400 440 535 470 L545 510 Q400 540 255 510 Z" fill="#1d1d20"/>
+  <path d="M265 470 Q400 440 535 470" stroke="url(#rim)" stroke-width="3" fill="none"/>
+  <!-- armrests -->
+  <path d="M260 470 L235 380 L285 380" stroke="#232326" stroke-width="18" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M540 470 L565 380 L515 380" stroke="#232326" stroke-width="18" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- backrest -->
+  <path d="M300 440 Q285 300 320 200 Q400 160 480 200 Q515 300 500 440 Q400 460 300 440 Z" fill="url(#mesh)" stroke="#2f2f33" stroke-width="10"/>
+  <path d="M300 440 Q285 300 320 200 Q400 160 480 200 Q515 300 500 440 Q400 460 300 440 Z" fill="url(#grid)" opacity=".55"/>
+  <path d="M322 200 Q400 162 478 200" stroke="url(#rim)" stroke-width="3" fill="none"/>
+  <!-- lumbar -->
+  <path d="M318 360 Q400 390 482 360 L478 395 Q400 420 322 395 Z" fill="#141416" stroke="#c9971c" stroke-width="2" opacity=".95"/>
+  <!-- headrest -->
+  <rect x="395" y="120" width="10" height="60" fill="#3a3a3f"/>
+  <path d="M330 95 Q400 70 470 95 L462 140 Q400 125 338 140 Z" fill="#1b1b1e" stroke="#2f2f33" stroke-width="6"/>
+  <path d="M334 96 Q400 72 466 96" stroke="url(#rim)" stroke-width="3" fill="none"/>
+</svg>

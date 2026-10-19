@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9dcc7"/>
+      <stop offset="1" stop-color="#cdbb9f"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a8957a"/>
+      <stop offset="1" stop-color="#8a7860"/>
+    </linearGradient>
+    <linearGradient id="oak" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#b9864f"/>
+      <stop offset=".5" stop-color="#d4a46a"/>
+      <stop offset="1" stop-color="#a87543"/>
+    </linearGradient>
+    <radialGradient id="light" cx="70%" cy="10%" r="70%">
+      <stop offset="0" stop-color="#fff6e0" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#fff6e0" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="10"/></filter>
+  </defs>
+  <rect width="800" height="600" fill="url(#wall)"/>
+  <rect y="600" width="800" height="200" fill="url(#floor)"/>
+  <rect width="800" height="800" fill="url(#light)"/>
+  <ellipse cx="400" cy="660" rx="300" ry="22" fill="#3b2f22" opacity=".45" filter="url(#soft)"/>
+  <!-- frame -->
+  <g fill="#1b1b1d">
+    <rect x="130" y="402" width="16" height="258"/>
+    <rect x="654" y="402" width="16" height="258"/>
+    <rect x="182" y="402" width="12" height="230" opacity=".7"/>
+    <rect x="606" y="402" width="12" height="230" opacity=".7"/>
+    <rect x="130" y="560" width="540" height="10"/>
+  </g>
+  <path d="M146 420 L654 560 M654 420 L146 560" stroke="#1b1b1d" stroke-width="6" opacity=".35"/>
+  <!-- top -->
+  <rect x="110" y="380" width="580" height="26" rx="3" fill="url(#oak)"/>
+  <rect x="110" y="380" width="580" height="5" fill="#f0c88e" opacity=".7"/>
+  <g stroke="#8d5e33" stroke-width="1.4" opacity=".35" fill="none">
+    <path d="M130 392 Q300 386 460 394 T680 390"/>
+    <path d="M120 399 Q260 396 420 401 T690 398"/>
+  </g>
+  <!-- monitor -->
+  <rect x="290" y="210" width="220" height="135" rx="8" fill="#141416"/>
+  <rect x="300" y="220" width="200" height="115" rx="3" fill="#24201b"/>
+  <rect x="300" y="220" width="200" height="115" rx="3" fill="url(#oak)" opacity=".18"/>
+  <path d="M320 300 L370 260 L410 290 L450 250 L480 275" stroke="#f5d061" stroke-width="3" fill="none"/>
+  <rect x="392" y="345" width="16" height="25" fill="#2a2a2d"/>
+  <rect x="360" y="368" width="80" height="12" rx="3" fill="#2a2a2d"/>
+  <!-- keyboard & mug & plant -->
+  <rect x="330" y="362" width="120" height="14" rx="3" fill="#ece3d3" stroke="#3a3a3d" stroke-width="2"/>
+  <rect x="540" y="342" width="34" height="38" rx="6" fill="#efe7da"/>
+  <path d="M574 352 q16 0 16 12 q0 12 -16 12" stroke="#efe7da" stroke-width="5" fill="none"/>
+  <path d="M190 380 L198 340 L232 340 L240 380 Z" fill="#b65c3a"/>
+  <g fill="#4f7a4a">
+    <ellipse cx="205" cy="318" rx="10" ry="26" transform="rotate(-25 205 318)"/>
+    <ellipse cx="225" cy="312" rx="10" ry="28" transform="rotate(20 225 312)"/>
+    <ellipse cx="215" cy="300" rx="9" ry="30"/>
+  </g>
+</svg>
