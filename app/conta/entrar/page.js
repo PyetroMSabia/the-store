@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "@/components/UserContext";
 import { safeNextPath } from "@/lib/validation";
+import { EyeIcon, EyeOffIcon } from "@/components/Icons";
 
 function LoginForm() {
   const router = useRouter();
@@ -14,8 +15,10 @@ function LoginForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -86,16 +89,47 @@ function LoginForm() {
                 Esqueceu a senha?
               </Link>
             </div>
-            <input
-              id="login-password"
-              className="input"
-              type="password"
-              autoComplete="current-password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="password-input-wrap" style={{ position: "relative", width: "100%" }}>
+              <input
+                id="login-password"
+                className="input"
+                type={showLoginPassword ? "text" : "password"}
+                autoComplete="current-password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                style={{ paddingRight: 44 }}
+              />
+              <button
+                type="button"
+                tabIndex={-1}
+                className={`password-toggle-btn ${showLoginPassword ? "active" : ""}`}
+                onClick={() => setShowLoginPassword((prev) => !prev)}
+                title={showLoginPassword ? "Ocultar senha" : "Mostrar senha"}
+                aria-label={showLoginPassword ? "Ocultar senha" : "Mostrar senha"}
+                style={{
+                  position: "absolute",
+                  right: 12,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  color: showLoginPassword ? "var(--gold)" : "var(--muted)",
+                  padding: 4,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {showLoginPassword ? (
+                  <EyeOffIcon width={18} height={18} />
+                ) : (
+                  <EyeIcon width={18} height={18} />
+                )}
+              </button>
+            </div>
           </div>
 
           <button

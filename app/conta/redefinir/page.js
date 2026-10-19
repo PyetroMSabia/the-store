@@ -4,6 +4,7 @@ import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { passwordStrength } from "@/lib/validation";
+import { EyeIcon, EyeOffIcon } from "@/components/Icons";
 
 function ResetPasswordForm() {
   const router = useRouter();
@@ -12,9 +13,12 @@ function ResetPasswordForm() {
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
 
   const strength = passwordStrength(password);
   const strengthLabels = ["Muito fraca", "Fraca", "Razoável", "Boa", "Forte"];
@@ -87,16 +91,47 @@ function ResetPasswordForm() {
           <form onSubmit={handleSubmit}>
             <div className="field">
               <label htmlFor="new-password">Nova senha</label>
-              <input
-                id="new-password"
-                className="input"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                autoFocus
-              />
+              <div className="password-input-wrap" style={{ position: "relative", width: "100%" }}>
+                <input
+                  id="new-password"
+                  className="input"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoFocus
+                  style={{ paddingRight: 44 }}
+                />
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  className={`password-toggle-btn ${showPassword ? "active" : ""}`}
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  style={{
+                    position: "absolute",
+                    right: 12,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    background: "transparent",
+                    border: "none",
+                    cursor: "pointer",
+                    color: showPassword ? "var(--gold)" : "var(--muted)",
+                    padding: 4,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {showPassword ? (
+                    <EyeOffIcon width={18} height={18} />
+                  ) : (
+                    <EyeIcon width={18} height={18} />
+                  )}
+                </button>
+              </div>
               {password && (
                 <div style={{ marginTop: 6 }}>
                   <div style={{ display: "flex", gap: 4, height: 4, borderRadius: 2, overflow: "hidden", background: "var(--surface-3)" }}>
@@ -121,15 +156,66 @@ function ResetPasswordForm() {
 
             <div className="field">
               <label htmlFor="confirm-password">Confirme a nova senha</label>
-              <input
-                id="confirm-password"
-                className="input"
-                type="password"
-                placeholder="••••••••"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
+              <div className="password-input-wrap" style={{ position: "relative", width: "100%" }}>
+                <input
+                  id="confirm-password"
+                  className="input"
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  style={{ paddingRight: 44 }}
+                />
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  className={`password-toggle-btn ${showConfirmPassword ? "active" : ""}`}
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  title={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                  aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                  style={{
+                    position: "absolute",
+                    right: 12,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    background: "transparent",
+                    border: "none",
+                    cursor: "pointer",
+                    color: showConfirmPassword ? "var(--gold)" : "var(--muted)",
+                    padding: 4,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOffIcon width={18} height={18} />
+                  ) : (
+                    <EyeIcon width={18} height={18} />
+                  )}
+                </button>
+              </div>
+              {confirmPassword && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    fontSize: 12,
+                    marginTop: 6,
+                    color: password === confirmPassword ? "#3ecf8e" : "#ef6a5b",
+                    fontWeight: 500,
+                    textAlign: "left",
+                  }}
+                >
+                  {password === confirmPassword ? (
+                    <span>✓ As senhas coincidem</span>
+                  ) : (
+                    <span>✕ As senhas precisam ser iguais</span>
+                  )}
+                </div>
+              )}
             </div>
 
             <button

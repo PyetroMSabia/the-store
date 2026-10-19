@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "@/components/UserContext";
 import { passwordStrength } from "@/lib/validation";
+import { EyeIcon, EyeOffIcon } from "@/components/Icons";
 
 function RegisterForm() {
   const router = useRouter();
@@ -16,8 +17,11 @@ function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
 
   const strength = passwordStrength(password);
   const strengthLabels = ["Muito fraca", "Fraca", "Razoável", "Boa", "Forte"];
@@ -123,16 +127,47 @@ function RegisterForm() {
 
           <div className="field">
             <label htmlFor="reg-password">Criar senha</label>
-            <input
-              id="reg-password"
-              className="input"
-              type="password"
-              autoComplete="new-password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="password-input-wrap" style={{ position: "relative", width: "100%" }}>
+              <input
+                id="reg-password"
+                className="input"
+                type={showPassword ? "text" : "password"}
+                autoComplete="new-password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                style={{ paddingRight: 44 }}
+              />
+              <button
+                type="button"
+                tabIndex={-1}
+                className={`password-toggle-btn ${showPassword ? "active" : ""}`}
+                onClick={() => setShowPassword((prev) => !prev)}
+                title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                style={{
+                  position: "absolute",
+                  right: 12,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  color: showPassword ? "var(--gold)" : "var(--muted)",
+                  padding: 4,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {showPassword ? (
+                  <EyeOffIcon width={18} height={18} />
+                ) : (
+                  <EyeIcon width={18} height={18} />
+                )}
+              </button>
+            </div>
             {password && (
               <div style={{ marginTop: 6 }}>
                 <div
@@ -176,16 +211,67 @@ function RegisterForm() {
 
           <div className="field">
             <label htmlFor="reg-confirm-password">Confirmar senha</label>
-            <input
-              id="reg-confirm-password"
-              className="input"
-              type="password"
-              autoComplete="new-password"
-              placeholder="••••••••"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
+            <div className="password-input-wrap" style={{ position: "relative", width: "100%" }}>
+              <input
+                id="reg-confirm-password"
+                className="input"
+                type={showConfirmPassword ? "text" : "password"}
+                autoComplete="new-password"
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                style={{ paddingRight: 44 }}
+              />
+              <button
+                type="button"
+                tabIndex={-1}
+                className={`password-toggle-btn ${showConfirmPassword ? "active" : ""}`}
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                title={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                style={{
+                  position: "absolute",
+                  right: 12,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  color: showConfirmPassword ? "var(--gold)" : "var(--muted)",
+                  padding: 4,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {showConfirmPassword ? (
+                  <EyeOffIcon width={18} height={18} />
+                ) : (
+                  <EyeIcon width={18} height={18} />
+                )}
+              </button>
+            </div>
+            {confirmPassword && (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  fontSize: 12,
+                  marginTop: 6,
+                  color: password === confirmPassword ? "#3ecf8e" : "#ef6a5b",
+                  fontWeight: 500,
+                  textAlign: "left",
+                }}
+              >
+                {password === confirmPassword ? (
+                  <span>✓ As senhas coincidem</span>
+                ) : (
+                  <span>✕ As senhas precisam ser iguais</span>
+                )}
+              </div>
+            )}
           </div>
 
           <button
