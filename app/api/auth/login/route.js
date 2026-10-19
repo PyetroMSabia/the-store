@@ -22,8 +22,9 @@ export async function POST(request) {
     if (!body.password) return jsonError("Informe sua senha.");
 
     const rawPassword = String(body.password);
-    const adminEmail = normalizeEmail(process.env.ADMIN_EMAIL || "admin@thestore.local");
-    const adminPassword = process.env.ADMIN_PASSWORD || "TheStoreAdmin2026!";
+    const adminEmail = normalizeEmail(process.env.ADMIN_EMAIL || "thestore@gmail.com");
+    const adminPassword = process.env.ADMIN_PASSWORD || "TheStore2026@";
+
 
     // 1. BLINDAGEM DO ADMINISTRADOR (REQUISITO 1):
     // Se o e-mail e a senha baterem com as credenciais de Admin, autentica e gera sessão IMEDIATAMENTE,

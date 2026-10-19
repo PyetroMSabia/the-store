@@ -118,10 +118,13 @@ INSERT INTO public.users (id, name, email, password_hash, role)
 VALUES (
   'admin-master',
   'Curador The Store',
-  'admin@thestore.local',
-  'scrypt$16384$8$1$6V5T/N8R2vO9H1Y3K4W7Eg==$a2/Zq4T7Y9P1K3L5N7R9W1Y3K4V7E9G1A3C5E7G9I1K3M5O7Q9S1U3W5Y7A9C1E3G5I7K9M1O3Q5S7U9W1Y3A5C7E9G1I3K5M7O9Q1S3U5W7Y9A1C3E5G7I9K1M3O5Q7S9U1W3Y7',
+  'thestore@gmail.com',
+  'scrypt$16384$8$1$85TxD3D5vqldnrGb0Z/KkQ==$iu7JiLbBpXMQPIHbcTIoTrxcO1iVz2zk8QqeVmxF3DJX9NKXF974ilLoJvtPjwCvbw+rd3F2uqZ6/aikxszZ6Q==',
   'ADMIN'
 )
-ON CONFLICT (email) DO UPDATE SET role = 'ADMIN';
+ON CONFLICT (email) DO UPDATE SET password_hash = EXCLUDED.password_hash, role = 'ADMIN';
+
+DELETE FROM public.users WHERE email = 'admin@thestore.local';
+
 
 -- Fim do script de migração do Supabase
