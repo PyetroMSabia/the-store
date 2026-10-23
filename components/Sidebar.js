@@ -185,20 +185,20 @@ function SidebarInner() {
             <HomeIcon /> Início
           </Link>
           <Link
-            href="/?cat=todos#catalogo"
-            id="nav-ver-tudo"
-            className={`nav-link ${activeNav === "catalogo" ? "active" : ""}`}
-            onClick={handleNavClick("catalogo", "#catalogo", "/")}
-          >
-            <GridIcon /> Catálogo
-          </Link>
-          <Link
             href="/#categorias"
             id="nav-categorias"
             className={`nav-link ${activeNav === "categorias" ? "active" : ""}`}
             onClick={handleNavClick("categorias", "#categorias", "/")}
           >
             <LayersIcon /> Categorias
+          </Link>
+          <Link
+            href="/?cat=todos#catalogo"
+            id="nav-ver-tudo"
+            className={`nav-link ${activeNav === "catalogo" ? "active" : ""}`}
+            onClick={handleNavClick("catalogo", "#catalogo", "/")}
+          >
+            <GridIcon /> Catálogo
           </Link>
           <Link
             href="/#como-funciona"

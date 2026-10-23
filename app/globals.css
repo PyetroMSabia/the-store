@@ -44,7 +44,8 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
-a { color: inherit; text-decoration: none; }
+a { color: inherit; text-decoration: none; transition: all 0.2s ease; }
+
 img { display: block; max-width: 100%; }
 button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
 input, select, textarea { font: inherit; color: inherit; }
@@ -66,7 +67,9 @@ input, select, textarea { font: inherit; color: inherit; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
 /* ---------- Animations ---------- */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
 @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -75,15 +78,17 @@ input, select, textarea { font: inherit; color: inherit; }
 
 /* ---------- Buttons ---------- */
 .btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  display: inline-flex !important; align-items: center !important; justify-content: center !important; gap: 8px;
   height: 46px; padding: 0 22px; border-radius: 999px;
   font-weight: 600; font-size: 14px; letter-spacing: 0.02em;
-  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s, border-color 0.25s, color 0.25s;
+  transition: all 0.2s ease !important;
   white-space: nowrap;
 }
+.btn svg { flex-shrink: 0; display: inline-block; vertical-align: middle; }
 .btn:active { transform: scale(0.97); }
 .btn-gold { background: var(--gold-grad); color: #17130a; box-shadow: 0 8px 30px -10px rgba(242, 193, 78, 0.6); }
 .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 14px 40px -10px rgba(242, 193, 78, 0.8); }
+
 .btn-ghost { border: 1px solid var(--border-strong); background: rgba(255, 255, 255, 0.03); }
 .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
 .btn-sm { height: 36px; padding: 0 14px; font-size: 13px; }
@@ -144,20 +149,25 @@ input, select, textarea { font: inherit; color: inherit; }
   border-bottom: 1px solid var(--border);
 }
 .menu-btn { display: none; }
-.top-tabs { display: flex; gap: 4px; margin: 0 auto; overflow-x: auto; scrollbar-width: none; }
+.top-tabs {
+  display: flex; gap: 6px; margin: 0 auto; overflow-x: auto; scrollbar-width: none;
+  -webkit-overflow-scrolling: touch; padding: 0 4px;
+}
 .top-tabs::-webkit-scrollbar { display: none; }
 .top-tab {
-  position: relative; padding: 10px 14px; font-size: 12.5px; font-weight: 600;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); white-space: nowrap;
-  transition: color 0.2s;
+  position: relative; padding: 8px 12px; font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  white-space: nowrap !important; flex-shrink: 0;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 .top-tab::after {
-  content: ""; position: absolute; left: 14px; right: 14px; bottom: 4px; height: 2px;
-  background: var(--gold-grad); transform: scaleX(0); transition: transform 0.35s var(--ease);
+  content: ""; position: absolute; left: 12px; right: 12px; bottom: 2px; height: 2px;
+  background: var(--gold-grad); transform: scaleX(0); transition: transform 0.25s var(--ease);
 }
 .top-tab:hover, .top-tab.active { color: var(--text); }
 .top-tab.active::after, .top-tab:hover::after { transform: scaleX(1); }
 .top-tab.sale { color: var(--gold); }
+
 .search {
   position: relative; display: flex; align-items: center; width: 280px; height: 42px;
   border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border);
@@ -299,8 +309,9 @@ input, select, textarea { font: inherit; color: inherit; }
 .card {
   position: relative; display: flex; flex-direction: column; border-radius: var(--radius-lg);
   background: var(--surface); border: 1px solid var(--border); overflow: hidden;
-  transition: transform 0.45s var(--ease), border-color 0.35s, box-shadow 0.45s var(--ease);
+  transition: all 0.2s ease;
   animation: fadeUp 0.6s var(--ease) both;
+
 }
 .card:hover { transform: translateY(-6px); border-color: rgba(242, 193, 78, 0.4); box-shadow: 0 30px 60px -30px rgba(242, 193, 78, 0.35); }
 .card-media { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: var(--surface-2); }
@@ -335,17 +346,27 @@ input, select, textarea { font: inherit; color: inherit; }
 /* Seal */
 .seal {
   display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px 5px 7px; border-radius: 999px;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: #17130a; background: var(--gold-grad);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: #0d0d0f !important; background: var(--gold-grad);
   position: relative; overflow: hidden;
 }
-.seal svg { width: 14px; height: 14px; }
+.seal, .seal * {
+  color: #0d0d0f !important;
+  font-weight: 700 !important;
+}
+.seal svg {
+  width: 14px; height: 14px;
+  color: #0d0d0f !important;
+  stroke: #0d0d0f !important;
+  position: relative; z-index: 1; flex-shrink: 0;
+}
 .seal::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%);
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
   background-size: 200% 100%; animation: shimmer 3.2s linear infinite;
 }
 .seal-lg { font-size: 13px; padding: 8px 14px 8px 10px; }
 .seal-lg svg { width: 18px; height: 18px; }
+
 
 /* Store chip */
 .store-chip {
@@ -660,17 +681,35 @@ select.input { appearance: none; cursor: pointer; }
 }
 
 /* ---------- Account Hero ---------- */
+/* ---------- Account Hero ---------- */
+.account-container {
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
 .account-hero {
   display: flex; align-items: center; gap: 24px; padding: 32px; border-radius: var(--radius-lg);
   background: linear-gradient(135deg, var(--surface) 0%, var(--bg-2) 100%);
   border: 1px solid var(--border);
 }
 .account-avatar {
-  width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center;
+  width: 72px; height: 72px; border-radius: 50%;
+  display: flex !important; align-items: center !important; justify-content: center !important;
   font-family: var(--font-display); font-size: 32px; font-weight: 700;
-  background: var(--gold-grad); color: #17130a;
+  background: var(--gold-grad); color: #0d0d0f !important;
   box-shadow: 0 8px 24px -6px rgba(242, 193, 78, 0.5);
+  border: none !important; outline: none !important;
+  line-height: 1; flex-shrink: 0; user-select: none;
+  position: relative; overflow: hidden;
 }
+.account-avatar::before,
+.account-avatar::after {
+  content: none !important;
+  display: none !important;
+}
+
 
 /* ---------- Cart ---------- */
 .cart-grid {

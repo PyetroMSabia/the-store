@@ -27,10 +27,21 @@ export default async function AccountPage() {
     : "Recentemente";
 
   return (
-    <div className="reveal" style={{ maxWidth: 860, margin: "0 auto" }}>
+    <div className="account-container reveal" style={{ maxWidth: 860, width: "100%", margin: "0 auto", display: "flex", flexDirection: "column" }}>
       <div className="account-hero">
-        <div className="account-avatar">
-          {user.name.charAt(0).toUpperCase()}
+        <div
+          className="account-avatar"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            lineHeight: 1,
+            userSelect: "none",
+          }}
+        >
+          <span style={{ display: "block", transform: "translateY(-1px)" }}>
+            {user.name.charAt(0).toUpperCase()}
+          </span>
         </div>
         <div>
           <span className="eyebrow" style={{ marginBottom: 6 }}>
@@ -74,7 +85,9 @@ export default async function AccountPage() {
         <div className="sidebar-card" style={{ margin: "24px 0", background: "linear-gradient(135deg, #1b160d 0%, #141416 100%)", borderColor: "rgba(242, 193, 78, 0.4)" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14 }}>
             <div>
-              <span className="seal"><ShieldIcon /> Painel de Controle</span>
+              <span className="seal" style={{ color: "#0d0d0f", fontWeight: 700 }}>
+                <ShieldIcon width={14} height={14} style={{ color: "#0d0d0f", stroke: "#0d0d0f" }} /> Painel de Controle
+              </span>
               <h3 style={{ margin: "8px 0 4px", fontSize: 20 }}>Você é um Administrador da The Store</h3>
               <p className="muted">Cadastre novos produtos, importe ofertas por link e gerencie a vitrine.</p>
             </div>

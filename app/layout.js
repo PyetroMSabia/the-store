@@ -6,6 +6,8 @@ import { NavProvider } from "@/components/NavContext";
 import { UserProvider } from "@/components/UserContext";
 import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
+import AuthModal from "@/components/AuthModal";
+
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -50,7 +52,11 @@ export default function RootLayout({ children }) {
       </head>
       <body suppressHydrationWarning>
         <UserProvider>
+          <Suspense fallback={null}>
+            <AuthModal />
+          </Suspense>
           <NavProvider>
+
             <div className="shell">
               <Suspense fallback={<aside className="sidebar" id="sidebar" />}>
                 <Sidebar />
