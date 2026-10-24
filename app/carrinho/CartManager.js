@@ -11,9 +11,32 @@ import SafeImage from "@/components/SafeImage";
 export default function CartManager({ initialItems = [] }) {
   const [items, setItems] = useState(initialItems);
   const [loadingId, setLoadingId] = useState(null);
+  const [showLinksPanel, setShowLinksPanel] = useState(false);
   const { refresh } = useUser();
 
   const subtotal = items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+  function handleOpenProductLinks() {
+    if (!items || items.length === 0) return;
+
+    if (items.length === 1) {
+      const prod = items[0].product;
+      const url = `/go/${prod.id}`;
+      window.open(url, "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    // Se houver múltiplos produtos: tenta abrir as abas correspondentes
+    items.forEach((item) => {
+      try {
+        const url = `/go/${item.product.id}`;
+        window.open(url, "_blank", "noopener,noreferrer");
+      } catch {}
+    });
+
+    // Exibe simultaneamente o mini-painel expansível com links diretos
+    setShowLinksPanel(true);
+  }
 
   async function updateQuantity(productId, newQty) {
     if (newQty < 1) return removeItem(productId);
@@ -224,6 +247,89 @@ export default function CartManager({ initialItems = [] }) {
           >
             Continuar explorando ofertas
           </Link>
+
+          {/* REQUISITO 4: Botão dourado destacado para abrir links dos produtos */}
+          <button
+            type="button"
+            className="btn btn-gold"
+            id="btn-open-all-product-links"
+            onClick={handleOpenProductLinks}
+            style={{
+              width: "100%",
+              justifyContent: "center",
+              padding: "13px 18px",
+              fontSize: 14,
+              fontWeight: 700,
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              boxShadow: "0 4px 14px rgba(242, 193, 78, 0.25)",
+            }}
+          >
+            🔗 Abrir links dos produtos ({items.length})
+          </button>
+
+          {/* Mini-painel expansível listando links diretos de 1 clique */}
+          {showLinksPanel && items.length > 1 && (
+            <div
+              className="reveal"
+              style={{
+                marginTop: 6,
+                padding: "14px",
+                borderRadius: "var(--radius-md)",
+                background: "var(--surface-2)",
+                border: "1px solid var(--border-gold, rgba(242, 193, 78, 0.4))",
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: 12.5, fontWeight: 700, color: "var(--gold)" }}>
+                  🚀 Links Oficiais Prontos (1 Clique)
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setShowLinksPanel(false)}
+                  style={{ background: "none", border: "none", color: "var(--muted)", cursor: "pointer", fontSize: 11 }}
+                >
+                  ✕ Fechar
+                </button>
+              </div>
+              <p className="muted" style={{ fontSize: 11.5, margin: 0, lineHeight: 1.4 }}>
+                Se o seu navegador bloqueou a abertura de múltiplas abas simultâneas, clique abaixo para abrir cada loja oficial diretamente:
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6, maxHeight: 220, overflowY: "auto" }}>
+                {items.map((item) => {
+                  const p = item.product;
+                  const sName = p.storeName || (p.offers?.[0]?.storeName) || "Loja Oficial";
+                  return (
+                    <a
+                      key={p.id}
+                      href={`/go/${p.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-ghost btn-sm"
+                      style={{
+                        justifyContent: "space-between",
+                        fontSize: 12,
+                        padding: "7px 10px",
+                        textAlign: "left",
+                        border: "1px solid var(--border)",
+                      }}
+                    >
+                      <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 160 }}>
+                        {p.title}
+                      </span>
+                      <span style={{ display: "flex", alignItems: "center", gap: 4, color: "var(--gold)", fontWeight: 600, flexShrink: 0 }}>
+                        {sName} <ExternalIcon width={10} height={10} />
+                      </span>
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

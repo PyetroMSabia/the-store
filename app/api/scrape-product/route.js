@@ -15,9 +15,10 @@ export async function POST(request) {
   }
 
   const rawUrl = String(body.url).trim();
-  const urlCheck = validateScrapeUrl(rawUrl);
-  if (!urlCheck.ok) {
-    return jsonError(urlCheck.error || "URL bloqueada por política de segurança SSRF.");
+  try {
+    validateScrapeUrl(rawUrl);
+  } catch (err) {
+    return jsonError(err.message || "URL bloqueada por política de segurança SSRF.");
   }
 
   try {

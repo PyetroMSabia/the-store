@@ -5,6 +5,7 @@ import { listUserOrders } from "@/lib/orders";
 import { formatBRL } from "@/lib/offers";
 import { UserIcon, HeartIcon, CartIcon, SettingsIcon, ShieldIcon } from "@/components/Icons";
 import AccountActions from "./AccountActions";
+import ProfileCustomizer from "@/components/ProfileCustomizer";
 
 export const dynamic = "force-dynamic";
 
@@ -37,11 +38,21 @@ export default async function AccountPage() {
             justifyContent: "center",
             lineHeight: 1,
             userSelect: "none",
+            overflow: "hidden",
+            border: user.avatarUrl ? "2px solid var(--gold)" : undefined,
           }}
         >
-          <span style={{ display: "block", transform: "translateY(-1px)" }}>
-            {user.name.charAt(0).toUpperCase()}
-          </span>
+          {user.avatarUrl ? (
+            <img
+              src={user.avatarUrl}
+              alt={user.name}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          ) : (
+            <span style={{ display: "block", transform: "translateY(-1px)" }}>
+              {user.name.charAt(0).toUpperCase()}
+            </span>
+          )}
         </div>
         <div>
           <span className="eyebrow" style={{ marginBottom: 6 }}>
@@ -49,6 +60,11 @@ export default async function AccountPage() {
           </span>
           <h1>{user.name}</h1>
           <p className="muted">{user.email} · Membro desde {formattedDate}</p>
+          {user.bio && (
+            <p style={{ marginTop: 6, fontSize: 13, color: "var(--fg)", fontStyle: "italic", opacity: 0.9 }}>
+              "{user.bio}"
+            </p>
+          )}
         </div>
       </div>
 
@@ -150,6 +166,9 @@ export default async function AccountPage() {
           </div>
         </div>
       )}
+
+      {/* Painel de Personalização de Perfil e Preferências de Recomendação */}
+      <ProfileCustomizer initialUser={user} />
 
       <div style={{ marginTop: 24, display: "flex", justifyContent: "flex-end" }}>
         <AccountActions />

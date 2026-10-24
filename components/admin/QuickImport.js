@@ -18,6 +18,7 @@ export default function QuickImport({ onCreated }) {
 
   // Formulário editável de curadoria completa
   const [editForm, setEditForm] = useState(null);
+  const [autoPublished, setAutoPublished] = useState(false);
   const [scrapingOfferIndex, setScrapingOfferIndex] = useState(null);
   const lastScrapedRef = useRef("");
 
@@ -31,6 +32,7 @@ export default function QuickImport({ onCreated }) {
     setError("");
     setPreview(null);
     setEditForm(null);
+    setAutoPublished(false);
 
     try {
       const res = await fetch("/api/scrape-product", {
@@ -80,8 +82,7 @@ export default function QuickImport({ onCreated }) {
         existingDescription: d.description || "",
       });
 
-      setPreview(d);
-      setEditForm({
+      const formPayload = {
         title: d.title || "",
         price: d.price || "",
         oldPrice: d.oldPrice || "",
@@ -96,7 +97,30 @@ export default function QuickImport({ onCreated }) {
         aiSummary: d.aiSummary || ai.aiSummary,
         offers: initialOffers,
         availableStores,
+      };
+
+      // Publicação direta e automática no banco de dados (REQUISITO 3: Publicação Direta e Automática)
+      let publishedProduct = null;
+      try {
+        const pubRes = await fetch("/api/products", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formPayload),
+        });
+        if (pubRes.ok) {
+          publishedProduct = await pubRes.json();
+          if (onCreated) onCreated("Produto importado e publicado automaticamente na vitrine!");
+        }
+      } catch (pubErr) {
+        console.warn("[the-store] Aviso ao salvar automaticamente:", pubErr);
+      }
+
+      setPreview(d);
+      setEditForm({
+        ...formPayload,
+        id: publishedProduct?.id || null,
       });
+      setAutoPublished(Boolean(publishedProduct));
     } catch {
       setError("Erro de rede ao conectar com o serviço de extração.");
     } finally {
@@ -280,8 +304,12 @@ export default function QuickImport({ onCreated }) {
     setError("");
 
     try {
-      const res = await fetch("/api/products", {
-        method: "POST",
+      const isUpdate = Boolean(editForm.id);
+      const endpoint = isUpdate ? `/api/products/${editForm.id}` : "/api/products";
+      const method = isUpdate ? "PUT" : "POST";
+
+      const res = await fetch(endpoint, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editForm),
       });
@@ -296,8 +324,11 @@ export default function QuickImport({ onCreated }) {
       setUrl("");
       setPreview(null);
       setEditForm(null);
+      setAutoPublished(false);
       lastScrapedRef.current = "";
-      if (onCreated) onCreated("Produto cadastrado com sucesso e publicado na vitrine!");
+      if (onCreated) {
+        onCreated(isUpdate ? "Ajustes do anúncio salvos com sucesso na vitrine!" : "Produto cadastrado e publicado com sucesso na vitrine!");
+      }
     } catch {
       setError("Erro ao salvar produto.");
     } finally {
@@ -314,9 +345,9 @@ export default function QuickImport({ onCreated }) {
           <SparkIcon width={18} height={18} />
         </div>
         <div>
-          <h2 style={{ fontSize: 20 }}>Importação Rápida & Múltiplas Lojas</h2>
+          <h2 style={{ fontSize: 20 }}>Importação Rápida por Link Oficial</h2>
           <p className="muted" style={{ fontSize: 13 }}>
-            Cole o link do produto para preenchimento automático. Em seguida, adicione quantos links de outras lojas desejar!
+            Cole o link do produto para geração e publicação automática na vitrine. Em seguida, adicione quantos links de outras lojas desejar!
           </p>
         </div>
       </div>
@@ -346,8 +377,9 @@ export default function QuickImport({ onCreated }) {
           className="btn btn-gold"
           id="btn-quick-import"
           disabled={loading || !url.trim()}
+          style={{ whiteSpace: "nowrap" }}
         >
-          {loading ? "Extraindo dados…" : "Importar Dados"}
+          {loading ? "⚡ Importando & Publicando…" : "⚡ Importar / Publicar"}
         </button>
       </form>
 
@@ -394,6 +426,28 @@ export default function QuickImport({ onCreated }) {
           </div>
 
           <form onSubmit={handleSave}>
+            {autoPublished && (
+              <div
+                className="auth-alert"
+                style={{
+                  background: "rgba(46, 204, 113, 0.12)",
+                  border: "1px solid rgba(46, 204, 113, 0.4)",
+                  color: "#2ecc71",
+                  marginBottom: 16,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                }}
+              >
+                <span style={{ fontSize: 20 }}>✅</span>
+                <div>
+                  <strong style={{ fontSize: 14 }}>Anúncio gerado e publicado automaticamente na vitrine!</strong>
+                  <div style={{ fontSize: 12.5, opacity: 0.9, marginTop: 2 }}>
+                    Título limpo, categoria inteligente, fotos oficiais e resumo por IA foram salvos no catálogo. Caso deseje personalizar algum detalhe, edite os campos abaixo e clique em salvar.
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="import-preview-layout">
               {/* Coluna da Imagem e Galeria */}
               <div className="import-preview-image-col">
@@ -875,7 +929,7 @@ export default function QuickImport({ onCreated }) {
                 id="btn-confirm-publish"
                 disabled={saving}
               >
-                {saving ? "Salvando…" : "Confirmar e Publicar na Vitrine"}
+                {saving ? "Salvando…" : editForm.id ? "Salvar Ajustes do Anúncio" : "Confirmar e Publicar na Vitrine"}
               </button>
             </div>
           </form>

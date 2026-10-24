@@ -114,7 +114,21 @@ export default function Topbar() {
           title={mounted && user ? `${user.name} (${user.role})` : "Minha Conta / Entrar"}
         >
           {mounted && user ? (
-            <span className="user-initial">{user.name.charAt(0).toUpperCase()}</span>
+            user.avatarUrl ? (
+              <img
+                src={user.avatarUrl}
+                alt={user.name}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
+            ) : (
+              <span className="user-initial">{user.name.charAt(0).toUpperCase()}</span>
+            )
           ) : (
             <UserIcon />
           )}

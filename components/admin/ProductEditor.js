@@ -84,7 +84,6 @@ export default function ProductEditor({ product, onClose, onSaved }) {
       ? product.images
       : (product?.imageUrl ? [product.imageUrl] : []);
   });
-  const debounceTimerRef = useRef(null);
 
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -408,21 +407,7 @@ export default function ProductEditor({ product, onClose, onSaved }) {
                   className="input"
                   value={form.title}
                   onChange={(e) => {
-                    const val = e.target.value;
-                    set("title", val);
-                    if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
-                    if (val.trim().length >= 4) {
-                      debounceTimerRef.current = setTimeout(() => {
-                        handleSearchMulti(val);
-                      }, 1400);
-                    }
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
-                      handleSearchMulti();
-                    }
+                    set("title", e.target.value);
                   }}
                   placeholder="Nome exato do item (ex: Fone Bluetooth, Vestido Canelado, Echo Dot...)"
                   required

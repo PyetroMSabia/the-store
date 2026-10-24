@@ -6,6 +6,7 @@ import { listProducts } from "@/lib/products";
 import { CATEGORIES, TABS } from "@/lib/catalog";
 import { formatBRL, isTopRated, isOnSale } from "@/lib/offers";
 import SafeImage from "@/components/SafeImage";
+import ShowcasePanel from "@/components/ShowcasePanel";
 
 export const dynamic = "force-dynamic";
 
@@ -104,6 +105,9 @@ export default async function Home({ searchParams }) {
               ))}
             </div>
           </div>
+
+          {/* PAINEL DE VITRINE DINÂMICA (REQUISITO 1) */}
+          <ShowcasePanel products={products} />
 
           <section className="section" id="categorias" style={{ scrollMarginTop: 90 }}>
             <div className="section-head">
